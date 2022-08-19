@@ -9,7 +9,8 @@ resource "aws_instance" "ec2" {
 
   user_data = <<-EOF
                 #!/bin/bash
-                echo "Hello, world" > index.html
+                echo "<h1>${data.terraform_remote_state.db.outputs.address}</h1>" >> index.html
+                echo "<h1>${data.terraform_remote_state.db.outputs.port}</h1>" >> index.html
                 nohup busybox httpd -f -p ${var.server_port} &
                 EOF
   vpc_security_group_ids = [aws_security_group.instance.id]
